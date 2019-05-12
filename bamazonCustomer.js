@@ -18,7 +18,7 @@ var connection = mysql.createConnection({
   
   connection.connect(function(err) {
     if (err) throw err;
-    console.log("I'm connected");
+    // console.log("I'm connected");
   });
 
   var itemArr = [];
@@ -46,11 +46,17 @@ var connection = mysql.createConnection({
         message: "What would you like to purchase?",
         // paginated: true,
         choices: itemArr
+      },
+      {
+        type: 'input',
+        name: 'units',
+        message: 'How many units would you like to purchase?'
       }
 
     ])
     .then(answers => {
       // console.log(answers);
+      // run function to check inventory
       return;
     });
   })
@@ -63,7 +69,7 @@ function shopByDepartment() {
 
 
 function mainFunction() {
-  console.log(chalk.blue("Welcome to Bamazon\n"));
+  console.log(chalk.blue("\n    Welcome to Bamazon\n"));
   
   inquirer.prompt([
     {
@@ -85,13 +91,13 @@ function mainFunction() {
         // function to 
         break;
       case 'EXIT':
-      connection.end();
+        
         return;
         break;
       default:
         // code block
     }
- 
+    connection.end();
   });
 }
 mainFunction();
