@@ -26,11 +26,11 @@ var amtOrdered = "";
 var itemID = "";
 var basketArr = [];
 var newStock = "";
-var totalItemPrice = "";
+var totalItemPrice = [];
 
 function updateProduct() {
 
-  console.log("Order number " + itemID + " is in stock! There are " + newStock + " remaining.");
+  console.log("\nYour order is in stock! There are " + newStock + " remaining.\n");
   connection.query('UPDATE products SET ? WHERE ?', [
     {
       stock_quantity: newStock
@@ -44,27 +44,37 @@ function updateProduct() {
       {
         type: "confirm",
         name: "checkout",
-        message: "Would you like to continue to chekout? If NO, you can continue shopping."
+        message: "Would you like to continue to chekout? If NO, you may continue shopping."
       }
     ]).then(answers => {
-      if (answers.checkout===true) {
+      if (answers.checkout === true) {
         checkOut(itemID, amtOrdered);
-      } else if (answers.checkout===false){
+      } else if (answers.checkout === false) {
         mainFunction();
         return;
-        
       }
-    
-  });
+    });
   }
   );
-  
 }
 
 var checkOut = function () {
-  console.log("You have ordered " + amtOrdered + " of item number " + itemID);
-  // inquirer.prompt
-  console.table(basketArr);
+
+  console.log("\n               Your Order                ");
+  console.log("\n=====================================\n");
+
+  for (i = 0; i < basketArr.length; i++) {
+    console.log(basketArr[i]);
+  }
+  console.log("\n------------------------------------------\n");
+  var reducer = (accumulator, currentValue) => accumulator + currentValue
+  console.log("Your total is: " +  chalk.red("$" +totalItemPrice.reduce(reducer)));
+
+  console.log("\n                              ");
+  console.log("\n=====================================\n");
+  console.log("      THANK YOU FOR YOU PURCHASE!");
+  console.log("\n=====================================\n");
+
   connection.end();
 }
 
@@ -73,22 +83,21 @@ var checkInventory = function () {
   connection.query('SELECT * FROM products WHERE id= ?', [itemID], function (error, results, fields) {
     if (error) throw error;
     var purchase = results[0];
-      // If quantity is equal of > amt ordered and above 0, subtract from quantity and move on with order
-    if (purchase.stock_quantity > amtOrdered) {
+    // If quantity is equal of > amt ordered and above 0, subtract from quantity and move on with order
+    if (purchase.stock_quantity >= amtOrdered) {
       newStock = purchase.stock_quantity - amtOrdered;
-      totalItemPrice = purchase.price * amtOrdered;
+      totalItemPrice.push(purchase.price * amtOrdered);
       // push purchased item to basket
-      
-      basketArr.push(purchase.product_name + " " + amtOrdered + " " + purchase.price +  " " + totalItemPrice);
+
+      basketArr.push(purchase.product_name + " ||  " + amtOrdered + " units" + " ||  " + chalk.red("$ " + purchase.price * amtOrdered));
       // Update stock count by subtracting itemQuantity
       updateProduct(newStock, itemID, amtOrdered);
       // Prompt keep shopping or checkout
-    } else {
-      // Else log INSUFFICENT INVENTORY, return to shop All list
-      console.log("INSUFFICIENT INVENTORY, please try back later.");
-      // shopAll();
+    } else if (purchase.stock_quantity < amtOrdered) {
+
+      console.log(chalk.red("\nINSUFFICIENT INVENTORY, please try back later."));
+      mainFunction();
     }
-  
   })
 }
 
@@ -112,13 +121,19 @@ var shopAll = function () {
           type: 'list',
           name: 'item',
           message: "What would you like to purchase?",
-          // paginated: true,
+         
           choices: itemArr
         },
         {
           type: 'input',
           name: 'units',
-          message: 'How many units would you like to purchase?'
+          message: 'How many units would you like to purchase?',
+          validate: function (value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false
+          }
         }
       ])
       .then(answers => {
@@ -136,9 +151,9 @@ function shopByDepartment() {
   console.log("Work in progress");
 }
 
-
+console.log(chalk.blue("\n    Welcome to Bamazon\n"));
 function mainFunction() {
-  console.log(chalk.blue("\n    Welcome to Bamazon\n"));
+  console.log("\n");
 
   inquirer.prompt([
     {
@@ -154,22 +169,15 @@ function mainFunction() {
         break;
       case 'Shop by Department':
         shopByDepartment();
-        // prompt department list, them prompt items in that department
+        // prompt department list, then prompt items in that department
         break;
 
       case 'EXIT':
-
+        connection.end();
         return;
         break;
-      default:
-      // code block
     }
 
   });
 }
 mainFunction();
-
-
-
-
-  // product_name, department_name, price, stock_quantity
