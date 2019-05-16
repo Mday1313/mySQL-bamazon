@@ -169,12 +169,11 @@ function addToInventory() {
         ])
         .then(answers => {
           amtOrdered = answers.units;
-         
-        //   newStock = purchase.stock_quantity - amtOrdered
+       
           var itemPicked = answers.item.split(")");
-          currentQuant = 
+         
           itemID = itemPicked[0];
-          console.log(itemID);
+          
           updateStock(itemID, amtOrdered);
           return;
         });

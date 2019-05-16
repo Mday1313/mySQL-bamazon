@@ -22,6 +22,7 @@ connection.connect(function (err) {
 });
 
 var itemArr = [];
+var departArr = [];
 var amtOrdered = "";
 var itemID = "";
 var basketArr = [];
@@ -148,7 +149,8 @@ var shopAll = function () {
 }
 
 function shopByDepartment() {
-  console.log("Work in progress");
+  console.log("\n Work in progress\n");
+  
 }
 
 console.log(chalk.blue("\n    Welcome to Bamazon\n"));
