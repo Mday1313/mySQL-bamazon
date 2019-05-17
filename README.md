@@ -15,11 +15,11 @@ When you select "Shop all items" a list will be populated with data from the myS
 
 Choose an item, enter the amount of units you would like to purchase. Database will be checked to see if there is sufficient inventory.  
 
-![Image of List of Items](images/customer_check_inventory.png)
+![Image of Check Inventory](images/customer_check_inventory.png)
 
 You are then prompted to either go to checkout or continue shopping.  You may add as many items to your cart as you would like. 
 
-![Image of List of Items](images/customer_checkout.png)
+![Image of Checkout](images/customer_checkout.png)
 
 ## Manager View <h2>
 
@@ -29,33 +29,33 @@ In order to enter the manager app:
 
 On start, you are presented with the following options...
 
-![Image of List of Items](images\manager_menu.png)
+![Image of Manager Menu](images\manager_menu.png)
 
 ### View Products for Sale <h3>
 
 This option will query all the inventory from the mySQL database and present all items in a basic table.
 
-![Image of List of Items](images\manager_all.png)
+![Image of Table All Inventory](images\manager_all.png)
 
 ### View Low Inventory <h3> 
 
 This option will query all the inventory from the mySQL database and present all item with a stock_quantity less than 5 in a basic table.
 
-![Image of List of Items](images\manager_low.png)
+![Image of Low Inventory](images\manager_low.png)
 
 ### Add to Inventory <h3>
 
 Option that allows the user to select an item from a list and update the database with the number of units in stock.
 
 ![Image of List of Items](images\manager_list.png)
-![Image of List of Items](images\manager_update.png)
+![Image of Update Item](images\manager_update.png)
 
 ### Add New Product <h3>
 
 Option that allows the user to select an item from a list and update the database with an entirely new product and all the corresponding information.
 
-![Image of List of Items](images\manager_new.png)
-![Image of List of Items](images\manager_last.png)
+![Image of Add New Product](images\manager_new.png)
+![Image of Table New Product](images\manager_last.png)
 
 ### EXIT <h3>
 
