@@ -218,8 +218,7 @@ function newProduct(){
               price: answers.price,
               stock_quantity: answers.quantity
             },
-            function(err, res) {
-              console.log(res);           
+            function(err, res) {           
               allProducts();
             }
           );
