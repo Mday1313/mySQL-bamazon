@@ -4,13 +4,10 @@ var chalk = require("chalk");
 
 var connection = mysql.createConnection({
   host: "localhost",
-
   // Your port; if not 3306
   port: 3306,
-
   // Your username
   user: "root",
-
   // Your password
   password: "18_Acad1a_PRISM=28?",
   database: "bamazon"
@@ -30,7 +27,6 @@ var newStock = "";
 var totalItemPrice = [];
 
 function updateProduct() {
-
   console.log("\nYour order is in stock! There are " + newStock + " remaining.\n");
   connection.query('UPDATE products SET ? WHERE ?', [
     {
@@ -60,7 +56,6 @@ function updateProduct() {
 }
 
 var checkOut = function () {
-
   console.log("\n               Your Order                ");
   console.log("\n=====================================\n");
 
@@ -69,13 +64,11 @@ var checkOut = function () {
   }
   console.log("\n------------------------------------------\n");
   var reducer = (accumulator, currentValue) => accumulator + currentValue
-  console.log("Your total is: " +  chalk.red("$" +totalItemPrice.reduce(reducer)));
-
+  console.log("Your total is: " + chalk.red("$" + totalItemPrice.reduce(reducer)));
   console.log("\n                              ");
   console.log("\n=====================================\n");
   console.log("      THANK YOU FOR YOU PURCHASE!");
   console.log("\n=====================================\n");
-
   connection.end();
 }
 
@@ -89,7 +82,6 @@ var checkInventory = function () {
       newStock = purchase.stock_quantity - amtOrdered;
       totalItemPrice.push(purchase.price * amtOrdered);
       // push purchased item to basket
-
       basketArr.push(purchase.product_name + " ||  " + amtOrdered + " units" + " ||  " + chalk.red("$ " + purchase.price * amtOrdered));
       // Update stock count by subtracting itemQuantity
       updateProduct(newStock, itemID, amtOrdered);
@@ -109,20 +101,18 @@ var shopAll = function () {
     // console.log(results);
     for (var i = 0; i < results.length; i++) {
       var info = results[i];
-
       itemArr.push(info.id + "). " +
         info.product_name + "  " +
         chalk.red(" $" +
           info.price));
     }
-
     inquirer
       .prompt([
         {
           type: 'list',
           name: 'item',
           message: "What would you like to purchase?",
-         
+
           choices: itemArr
         },
         {
@@ -150,13 +140,12 @@ var shopAll = function () {
 
 function shopByDepartment() {
   console.log("\n Work in progress\n");
-  
+
 }
 
 console.log(chalk.blue("\n    Welcome to Bamazon\n"));
 function mainFunction() {
   console.log("\n");
-
   inquirer.prompt([
     {
       type: 'list',
@@ -173,13 +162,11 @@ function mainFunction() {
         shopByDepartment();
         // prompt department list, then prompt items in that department
         break;
-
       case 'EXIT':
         connection.end();
         return;
         break;
     }
-
   });
 }
 mainFunction();
